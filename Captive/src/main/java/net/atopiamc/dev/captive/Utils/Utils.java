@@ -1,5 +1,6 @@
-package org.atopiamc.dev.captive;
+package net.atopiamc.dev.captive.Utils;
 
+import net.atopiamc.dev.captive.Main;
 import org.bukkit.ChatColor;
 
 public class Utils {

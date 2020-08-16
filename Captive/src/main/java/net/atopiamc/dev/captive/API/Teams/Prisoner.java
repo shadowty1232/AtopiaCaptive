@@ -1,7 +1,7 @@
-package org.atopiamc.dev.captive.API;
+package net.atopiamc.dev.captive.API.Teams;
 
-import org.atopiamc.dev.captive.Main;
-import org.atopiamc.dev.captive.Utils;
+import net.atopiamc.dev.captive.Main;
+import net.atopiamc.dev.captive.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -10,6 +10,7 @@ public class Prisoner {
     public Location spawn;
     public World world;
 
+    private Main plugin;
     public Prisoner(Main plugin) {
         world = plugin.getServer().getWorld(Utils.getString("Prisoner.Spawn.World"));
         double x = plugin.getConfig().getDouble("Prisoner.Spawn.X");

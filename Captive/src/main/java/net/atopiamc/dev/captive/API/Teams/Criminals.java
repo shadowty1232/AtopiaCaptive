@@ -1,7 +1,7 @@
-package org.atopiamc.dev.captive.API;
+package net.atopiamc.dev.captive.API.Teams;
 
-import org.atopiamc.dev.captive.Main;
-import org.atopiamc.dev.captive.Utils;
+import net.atopiamc.dev.captive.Main;
+import net.atopiamc.dev.captive.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

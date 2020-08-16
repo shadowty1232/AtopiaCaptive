@@ -1,16 +1,17 @@
-package org.atopiamc.dev.captive.API;
+package net.atopiamc.dev.captive.API.Teams;
 
-import org.atopiamc.dev.captive.Main;
+import net.atopiamc.dev.captive.Main;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
 public class Teams {
 
-    public ArrayList<Player> prisonerteam;
-    public ArrayList<Player> copteam;
-    public ArrayList<Player> criminalteam;
+    public static ArrayList<Player> prisonerteam;
+    public static ArrayList<Player> copteam;
+    public static ArrayList<Player> criminalteam;
 
+    private Main plugin;
     public Teams(Main plugin) {
         this.prisonerteam = new ArrayList<Player>();
         this.copteam = new ArrayList<Player>();
@@ -18,15 +19,15 @@ public class Teams {
         plugin.getLogger().info("Teams API Loaded.");
     }
 
-    public ArrayList<Player> getPrisonerTeam() {
+    public static ArrayList<Player> getPrisonerTeam() {
         return prisonerteam;
     }
 
-    public ArrayList<Player> getCopTeam() {
+    public static ArrayList<Player> getCopTeam() {
         return copteam;
     }
 
-    public ArrayList<Player> getCriminalTeam() {
+    public static ArrayList<Player> getCriminalTeam() {
         return criminalteam;
     }
 
