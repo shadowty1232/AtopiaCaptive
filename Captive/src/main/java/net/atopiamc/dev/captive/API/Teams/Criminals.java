@@ -10,6 +10,7 @@ public class Criminals {
 
     public Location spawn;
     public World world;
+    public static Criminals instance;
 
     private Main plugin;
     public Criminals(Main plugin) {
@@ -18,6 +19,7 @@ public class Criminals {
         double y = plugin.getConfig().getDouble("Criminals.Spawn.Y");
         double z = plugin.getConfig().getDouble("Criminals.Spawn.Z");
         spawn = new Location(world, x, y, z);
+        this.instance = this;
     }
 
     public Location getCriminalsSpawn() {
@@ -32,5 +34,9 @@ public class Criminals {
         plugin.getConfig().set("Criminals.Spawn.X", x);
         plugin.getConfig().set("Criminals.Spawn.Y", y);
         plugin.getConfig().set("Criminals.Spawn.Z", z);
+    }
+
+    public static Criminals getInstance() {
+        return instance;
     }
 }

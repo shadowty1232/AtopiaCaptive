@@ -14,17 +14,19 @@ import org.bukkit.entity.Player;
 
 public class GameFunctions implements Game {
 
-    private Main plugin;
+    private static Main plugin;
     private boolean inLobby;
     private boolean hasStarted;
     private static final int MIN_PLAYERS;
     private static final int MAX_PLAYERS;
-    private Location entryPoint;
+    private static Location entryPoint;
+    public static GameFunctions instance;
 
     public GameFunctions(Main plugin) {
         this.plugin = plugin;
         this.inLobby = true;
         this.hasStarted = false;
+        this.instance = this;
 
     }
 
@@ -72,11 +74,11 @@ public class GameFunctions implements Game {
         return inLobby;
     }
 
-    public void join(Player paramPlayer) {
+    public void join(Player p) {
         // TODO
     }
 
-    public void leave(Player paramPlayer) {
+    public void leave(Player p) {
         // TODO
     }
 
@@ -105,6 +107,10 @@ public class GameFunctions implements Game {
         double z = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.Z"));
         entryPoint = new Location(world, x, y, z);
         return entryPoint;
+    }
+
+    public static GameFunctions getInstance() {
+        return instance;
     }
 
 }
