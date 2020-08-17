@@ -1,8 +1,13 @@
 package net.atopiamc.dev.captive.API.Game;
 
+import net.atopiamc.dev.captive.API.Events.PlayerGameLeaveEvent;
+import net.atopiamc.dev.captive.API.GameAPI;
+import net.atopiamc.dev.captive.API.Listener.GameReset;
+import net.atopiamc.dev.captive.API.Listener.GameStart;
 import net.atopiamc.dev.captive.Main;
 import net.atopiamc.dev.captive.Utils.CountdownTimer;
 import net.atopiamc.dev.captive.Utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -35,7 +40,7 @@ public class GameFunctions implements Game {
             this.sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
         }
         else if (t.getSecondsLeft() % 5 == 0) {
-            this.sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
+               this.sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
         }});
         timer.scheduleTimer();
     }
@@ -48,11 +53,19 @@ public class GameFunctions implements Game {
             p.getInventory().setArmorContents(null);
             p.updateInventory();
         }
-        // TODO: Start EVENT
+        Bukkit.getPluginManager().callEvent(new GameStart(plugin, this));
     }
 
     public void stop() {
-        // TODO
+        for (Player ppl : GameFunctions.players) {
+            GameAPI.gamePlayers.get(ppl).leave();
+            GameAPI.gamePlayers.remove(ppl);
+            Bukkit.getPluginManager().callEvent(new PlayerGameLeaveEvent(this, ppl));
+        }
+        Bukkit.getPluginManager().callEvent(new GameReset(plugin, this));
+        GameFunctions.players.clear();
+        hasStarted = false;
+        inLobby = true;
     }
 
     public boolean inLobby() {
