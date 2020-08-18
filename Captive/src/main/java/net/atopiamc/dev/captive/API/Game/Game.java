@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 public interface Game {
-    public static final ArrayList<Player> players = new ArrayList();
+    ArrayList<Player> players = new ArrayList<Player>();
 
     void start();
 
@@ -25,5 +25,9 @@ public interface Game {
     void setEntryPoint(Location paramLocation);
 
     Location getEntryPoint();
+
+    String getName();
+
+    boolean hasStarted();
 
 }

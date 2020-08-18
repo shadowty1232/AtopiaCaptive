@@ -14,6 +14,7 @@ public class Criminals {
 
     private Main plugin;
     public Criminals(Main plugin) {
+        plugin.getConfig().set("Criminals.Spawn.World", "world");
         world = plugin.getServer().getWorld(Utils.getString("Criminals.Spawn.World"));
         double x = plugin.getConfig().getDouble("Criminals.Spawn.X");
         double y = plugin.getConfig().getDouble("Criminals.Spawn.Y");

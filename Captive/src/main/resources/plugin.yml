@@ -14,7 +14,11 @@ commands:
   setcriminalspawn:
     description: Sets the Criminals spawn.
   setprisonerspawn:
-    description: : Sets the Prisoner spawn.
+    description: Sets the Prisoner spawn.
+  joincaptive:
+    description: Joins the game queue.
+  leavecaptive:
+    description: LEaves the game queue.
 permissions:
   captive.admin:
     default: op

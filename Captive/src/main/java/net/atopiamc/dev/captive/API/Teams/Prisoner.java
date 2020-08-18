@@ -14,6 +14,7 @@ public class Prisoner {
 
     private Main plugin;
     public Prisoner(Main plugin) {
+        plugin.getConfig().set("Prisoner.Spawn.World", "world");
         world = plugin.getServer().getWorld(Utils.getString("Prisoner.Spawn.World"));
         double x = plugin.getConfig().getDouble("Prisoner.Spawn.X");
         double y = plugin.getConfig().getDouble("Prisoner.Spawn.Y");

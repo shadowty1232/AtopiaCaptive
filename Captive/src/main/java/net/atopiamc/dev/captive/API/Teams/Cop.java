@@ -14,6 +14,7 @@ public class Cop {
 
     private static Main plugin;
     public Cop(Main plugin) {
+        plugin.getConfig().set("Cops.Spawn.World", "world");
         this.world = plugin.getServer().getWorld(Utils.getString("Cops.Spawn.World"));
         double x = plugin.getConfig().getDouble("Cops.Spawn.X");
         double y = plugin.getConfig().getDouble("Cops.Spawn.Y");

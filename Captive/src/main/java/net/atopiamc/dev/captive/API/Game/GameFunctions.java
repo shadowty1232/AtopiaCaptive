@@ -1,6 +1,8 @@
 package net.atopiamc.dev.captive.API.Game;
 
+import net.atopiamc.dev.captive.API.Events.PlayerGameJoinEvent;
 import net.atopiamc.dev.captive.API.Events.PlayerGameLeaveEvent;
+import net.atopiamc.dev.captive.API.Exceptions.EntryPointNotSetException;
 import net.atopiamc.dev.captive.API.GameAPI;
 import net.atopiamc.dev.captive.API.Listener.GameReset;
 import net.atopiamc.dev.captive.API.Listener.GameStart;
@@ -10,7 +12,10 @@ import net.atopiamc.dev.captive.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
 
 public class GameFunctions implements Game {
 
@@ -21,6 +26,8 @@ public class GameFunctions implements Game {
     private static final int MAX_PLAYERS;
     private static Location entryPoint;
     public static GameFunctions instance;
+    File configFile = new File(plugin.getDataFolder(), "config.yml");
+    YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
     public GameFunctions(Main plugin) {
         this.plugin = plugin;
@@ -75,11 +82,31 @@ public class GameFunctions implements Game {
     }
 
     public void join(Player p) {
-        // TODO
+        if (players.size() >= MAX_PLAYERS || hasStarted()) {
+            return;
+        }
+        players.add(p);
+        GameAPI.gamePlayers.put(p, new GamePlayer(this, p));
+        try {
+            p.sendMessage(Utils.Color("&aYou have joined the Captive queue."));
+            p.teleport(getEntryPoint());
+        }
+        catch (EntryPointNotSetException e){
+            players.remove(p);
+            GameAPI.gamePlayers.remove(p);
+            throw new EntryPointNotSetException("Entry Point for Captive not set");
+        }
+        Bukkit.getPluginManager().callEvent(new PlayerGameJoinEvent(this, p));
+        if (players.size() >= MIN_PLAYERS && !hasStarted()) {
+            start();
+        }
     }
 
     public void leave(Player p) {
-        // TODO
+        players.remove(p);
+        GameAPI.gamePlayers.get(p).leave();
+        GameAPI.gamePlayers.remove(p);
+        Bukkit.getPluginManager().callEvent(new PlayerGameLeaveEvent(this, p));
     }
 
     public void sendMessage(String message) {
@@ -94,14 +121,18 @@ public class GameFunctions implements Game {
         double y = loc.getY();
         double z = loc.getZ();
         World world = loc.getWorld();
-        plugin.getConfig().set("Captive.Lobby.World", world);
-        plugin.getConfig().set("Captive.Lobby.X", x);
-        plugin.getConfig().set("Captive.Lobby.Y", y);
-        plugin.getConfig().set("Captive.Lobby.Z", z);
+        config.createSection("Captive.Lobby.World");
+        config.createSection("Captive.Lobby.X");
+        config.createSection("Captive.Lobby.Y");
+        config.createSection("Captive.Lobby.Z");
+        config.set("Captive.Lobby.World", world);
+        config.set("Captive.Lobby.X", x);
+        config.set("Captive.Lobby.Y", y);
+        config.set("Captive.Lobby.Z", z);
     }
 
     public Location getEntryPoint() {
-        World world = plugin.getServer().getWorld((String) plugin.getConfig().get("Captive.Lobby.World"));
+        World world = (World)plugin.getConfig().get("Captive.Lobby.World");
         double x = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.X"));
         double y = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.Y"));
         double z = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.Z"));
@@ -109,8 +140,17 @@ public class GameFunctions implements Game {
         return entryPoint;
     }
 
+    @Override
+    public String getName() {
+        return null;
+    }
+
     public static GameFunctions getInstance() {
         return instance;
+    }
+
+    public boolean hasStarted() {
+        return hasStarted;
     }
 
 }

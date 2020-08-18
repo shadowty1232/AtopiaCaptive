@@ -5,12 +5,12 @@ import net.atopiamc.dev.captive.API.Teams.Cop;
 import net.atopiamc.dev.captive.API.Teams.Criminals;
 import net.atopiamc.dev.captive.API.Teams.Prisoner;
 import net.atopiamc.dev.captive.API.Teams.Teams;
-import net.atopiamc.dev.captive.Commands.SetCopSpawn;
-import net.atopiamc.dev.captive.Commands.SetCriminalSpawn;
-import net.atopiamc.dev.captive.Commands.SetLobby;
-import net.atopiamc.dev.captive.Commands.SetPrisonerSpawn;
+import net.atopiamc.dev.captive.Commands.*;
 import net.atopiamc.dev.captive.Listener.BlockListener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
@@ -18,7 +18,23 @@ public class Main extends JavaPlugin {
         registerAPI();
         registerEvents();
         registerCommands();
+        registerConfig();
         getLogger().info("by Carbonate + TheJokerDev");
+    }
+
+    public void registerConfig() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            try {
+                saveDefaultConfig();
+                getLogger().info("Config not found. Creating.");
+            }
+            catch (RuntimeException e) {
+                getLogger().info("Error Saving Config.");
+            }
+        } else {
+            getLogger().info("Config Loaded.");
+        }
     }
 
     public void registerAPI() {
@@ -34,6 +50,8 @@ public class Main extends JavaPlugin {
         new SetCopSpawn(this);
         new SetCriminalSpawn(this);
         new SetPrisonerSpawn(this);
+        new JoinCaptive(this);
+        new LeaveCaptive(this);
     }
 
     public void registerEvents() {
