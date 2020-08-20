@@ -19,7 +19,7 @@ public class Cop {
     private static Location entryPoint;
 
 
-    private static Main plugin;
+    private Main plugin;
     
     public Cop(Main plugin) {
     	this.plugin = plugin;

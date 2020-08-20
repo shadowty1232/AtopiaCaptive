@@ -4,13 +4,18 @@ import net.atopiamc.dev.captive.Main;
 import net.atopiamc.dev.captive.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Prisoner {
 
     public Location spawn;
     public World world;
     public static Prisoner instance;
+    public Location entryPoint;
 
     private Main plugin;
     public Prisoner(Main plugin) {
@@ -27,14 +32,28 @@ public class Prisoner {
         return spawn;
     }
 
-    public void setPrisonerSpawn(Player p) {
-        Location playerLoc = p.getLocation();
-        double x = playerLoc.getX();
-        double y = playerLoc.getY();
-        double z = playerLoc.getZ();
-        plugin.getConfig().set("Prisoner.Spawn.X", x);
-        plugin.getConfig().set("Prisoner.Spawn.Y", y);
-        plugin.getConfig().set("Prisoner.Spawn.Z", z);
+    public void setPrisonerSpawn(Location loc) {
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
+        entryPoint = loc;
+        World world = loc.getWorld();
+        double x = loc.getX();
+        double y = loc.getY();
+        double z = loc.getZ();
+        double yaw = loc.getYaw();
+        double pitch = loc.getPitch();
+        config.set("Prisoner.Spawn.World", world.getName());
+        config.set("Prisoner.Spawn.X", x);
+        config.set("Prisoner.Spawn.Y", y);
+        config.set("Prisoner.Spawn.Z", z);
+        config.set("Prisoner.Spawn.Pitch", pitch);
+        config.set("Prisoner.Spawn.Yaw", yaw);
+        try {
+            config.save(configFile);
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Prisoner getInstance() {
