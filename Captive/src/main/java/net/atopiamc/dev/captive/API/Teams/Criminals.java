@@ -17,16 +17,18 @@ public class Criminals {
     public World world;
     public static Criminals instance;
     private static Location entryPoint;
-
+    
 
     private Main plugin;
+    
     public Criminals(Main plugin) {
+        this.plugin = plugin;
         plugin.getConfig().set("Criminals.Spawn.World", "world");
-        world = plugin.getServer().getWorld(Utils.getString("Criminals.Spawn.World"));
+        this.world = plugin.getServer().getWorld(Utils.getString("Criminals.Spawn.World"));
         double x = plugin.getConfig().getDouble("Criminals.Spawn.X");
         double y = plugin.getConfig().getDouble("Criminals.Spawn.Y");
         double z = plugin.getConfig().getDouble("Criminals.Spawn.Z");
-        spawn = new Location(world, x, y, z);
+        this.spawn = new Location(world, x, y, z);
         this.instance = this;
     }
 
@@ -35,8 +37,8 @@ public class Criminals {
     }
 
     public void setCriminalSpawn(Location loc) {
-    	File configFile = new File(plugin.getDataFolder(), "config.yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));  
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
         entryPoint = loc;
         World world = loc.getWorld();
         double x = loc.getX();

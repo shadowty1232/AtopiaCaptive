@@ -19,13 +19,15 @@ public class Prisoner {
 
     private Main plugin;
     public Prisoner(Main plugin) {
+        this.plugin = plugin;
         plugin.getConfig().set("Prisoner.Spawn.World", "world");
-        world = plugin.getServer().getWorld(Utils.getString("Prisoner.Spawn.World"));
+        this.world = plugin.getServer().getWorld(Utils.getString("Prisoner.Spawn.World"));
         double x = plugin.getConfig().getDouble("Prisoner.Spawn.X");
         double y = plugin.getConfig().getDouble("Prisoner.Spawn.Y");
         double z = plugin.getConfig().getDouble("Prisoner.Spawn.Z");
         spawn = new Location(world, x, y, z);
         this.instance = this;
+
     }
 
     public Location getPrisonerSpawn() {
@@ -48,6 +50,7 @@ public class Prisoner {
         config.set("Prisoner.Spawn.Z", z);
         config.set("Prisoner.Spawn.Pitch", pitch);
         config.set("Prisoner.Spawn.Yaw", yaw);
+        
         try {
             config.save(configFile);
 
