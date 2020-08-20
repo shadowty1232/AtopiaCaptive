@@ -150,6 +150,19 @@ public class GameListener implements Listener {
         Location copSpawn = Cop.getInstance().getCopSpawn();
         Location criminalSpawn = Criminals.getInstance().getCriminalsSpawn();
         Location prisonerSpawn = Prisoner.getInstance().getPrisonerSpawn();
+        for (int i = 0; i == api.gamePlayers.size(); i++) {
+            if (api.gamePlayers.size() == 3) {
+                if (i == 1) {
+                    cops.add(api.gamePlayers.get(i).getPlayer());
+                }
+                if (i == 2) {
+                    criminals.add(api.gamePlayers.get(i).getPlayer());
+                }
+                if (i == 3) {
+                    prisoner.add(api.gamePlayers.get(i).getPlayer());
+                }
+            }
+        }
         for (Player p : cops) {
             p.teleport(copSpawn);
             CopsKit.getInstance().receiveItems(p);
