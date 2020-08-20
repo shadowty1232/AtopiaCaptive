@@ -129,6 +129,7 @@ public class GameFunctions implements Game {
         config.set("Captive.Lobby.X", x);
         config.set("Captive.Lobby.Y", y);
         config.set("Captive.Lobby.Z", z);
+        // Test
     }
 
     public Location getEntryPoint() {
