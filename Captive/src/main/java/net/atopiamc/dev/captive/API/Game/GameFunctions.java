@@ -150,7 +150,6 @@ public class GameFunctions implements Game {
         return entryPoint;
     }
 
-    @Override
     public String getName() {
         return null;
     }

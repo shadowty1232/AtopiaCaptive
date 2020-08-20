@@ -1,20 +1,27 @@
 package net.atopiamc.dev.captive;
 
 import net.atopiamc.dev.captive.API.Game.GameFunctions;
+import net.atopiamc.dev.captive.API.GameAPI;
 import net.atopiamc.dev.captive.API.Teams.Cop;
 import net.atopiamc.dev.captive.API.Teams.Criminals;
 import net.atopiamc.dev.captive.API.Teams.Prisoner;
 import net.atopiamc.dev.captive.API.Teams.Teams;
 import net.atopiamc.dev.captive.Commands.*;
+import net.atopiamc.dev.captive.Kits.Kit;
 import net.atopiamc.dev.captive.Listener.BlockListener;
+import net.atopiamc.dev.captive.Listener.GameListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
+    public GameAPI api;
+
     public void onEnable() {
+        api = GameAPI.getInstance(this);
+        Kit.loadKits();
         registerAPI();
         registerEvents();
         registerCommands();
@@ -56,6 +63,15 @@ public class Main extends JavaPlugin {
 
     public void registerEvents() {
         new BlockListener(this);
+        Bukkit.getPluginManager().registerEvents(new GameListener(), this);
+    }
+
+    public GameAPI getApi() {
+        return api;
+    }
+
+    public static Main getPlugin() {
+        return getPlugin(Main.class);
     }
 
 }
