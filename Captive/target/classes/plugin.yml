@@ -1,0 +1,24 @@
+name: Captive
+authors:
+  - Carbonate
+  - TheJokerDev
+  - xDabDoub
+version: 1.0
+main: net.atopiamc.dev.captive.Main
+description: Captive Minigame
+commands:
+  setlobby:
+    description: Sets the Captive Lobby.
+  setcopspawn:
+    description: Sets the Cops spawn.
+  setcriminalspawn:
+    description: Sets the Criminals spawn.
+  setprisonerspawn:
+    description: Sets the Prisoner spawn.
+  joincaptive:
+    description: Joins the game queue.
+  leavecaptive:
+    description: LEaves the game queue.
+permissions:
+  captive.admin:
+    default: op
