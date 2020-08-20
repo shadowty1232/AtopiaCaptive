@@ -56,5 +56,5 @@ public abstract class Kit {
         return name;
     }
 
-    public abstract void receiveItems(byte id);
+    public abstract void receiveItems(Player p);
 }

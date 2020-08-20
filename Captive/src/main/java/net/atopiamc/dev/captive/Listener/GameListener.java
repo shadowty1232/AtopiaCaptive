@@ -2,6 +2,8 @@ package net.atopiamc.dev.captive.Listener;
 
 import net.atopiamc.dev.captive.API.Events.PlayerGameLeaveEvent;
 import net.atopiamc.dev.captive.API.Game.Game;
+import net.atopiamc.dev.captive.API.Game.GameFunctions;
+import net.atopiamc.dev.captive.API.Game.GamePlayer;
 import net.atopiamc.dev.captive.API.GameAPI;
 import net.atopiamc.dev.captive.API.Listener.GameReset;
 import net.atopiamc.dev.captive.API.Listener.GameStart;
@@ -9,6 +11,8 @@ import net.atopiamc.dev.captive.API.Teams.Cop;
 import net.atopiamc.dev.captive.API.Teams.Criminals;
 import net.atopiamc.dev.captive.API.Teams.Prisoner;
 import net.atopiamc.dev.captive.API.Teams.Teams;
+import net.atopiamc.dev.captive.Kits.CopsKit;
+import net.atopiamc.dev.captive.Kits.CriminalKit;
 import net.atopiamc.dev.captive.Kits.Kit;
 import net.atopiamc.dev.captive.Main;
 import net.atopiamc.dev.captive.Utils.CountdownTimer;
@@ -25,6 +29,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -71,6 +78,13 @@ public class GameListener implements Listener {
             criminals.remove(p);
             if (criminals.size() <= 0) {
                 secondWin(e.getGame());
+                won.put(e.getGame(), true);
+            }
+        }
+        else if (prisoner.contains(p)) {
+            prisoner.remove(p);
+            if (prisoner.size() <= 0) {
+                firstWin(e.getGame());
                 won.put(e.getGame(), true);
             }
         }
@@ -138,6 +152,7 @@ public class GameListener implements Listener {
         Location prisonerSpawn = Prisoner.getInstance().getPrisonerSpawn();
         for (Player p : cops) {
             p.teleport(copSpawn);
+            CopsKit.getInstance().receiveItems(p);
             p.sendMessage(Utils.Color("&9You are in the Cop Team!"));
             p.sendMessage(Utils.Color("&7Objective:"));
             p.sendMessage(Utils.Color("&7Make sure the Criminals don't break out the Prisoner!"));
@@ -145,6 +160,7 @@ public class GameListener implements Listener {
         }
         for (Player p : criminals) {
             p.teleport(criminalSpawn);
+            CriminalKit.getInstance().receiveItems(p);
             p.sendMessage(Utils.Color("&9You are in the Criminal Team!"));
             p.sendMessage(Utils.Color("&7Objective:"));
             p.sendMessage(Utils.Color("&7Take out the Cops and retrieve the Prisoner!"));
@@ -153,6 +169,8 @@ public class GameListener implements Listener {
         }
         for (Player p : prisoner) {
             p.teleport(prisonerSpawn);
+            p.getInventory().addItem(new ItemStack(Material.WOOD_PICKAXE, 1));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 2));
             p.sendMessage(Utils.Color("&9You are the Prisoner!"));
             p.sendMessage(Utils.Color("&7Objective:"));
             p.sendMessage(Utils.Color("&7Wait for your fellow Criminals to bust you out!"));
@@ -164,7 +182,17 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-
+        Player p = e.getPlayer();
+        GamePlayer gp = GameAPI.gamePlayers.get(p);
+        Game game = gp.getGame();
+        if (Teams.getPrisonerTeam().contains(p)) {
+            if (p.getLocation().distance(Criminals.getInstance().getCriminalsSpawn()) <= 3) {
+                secondWin(game);
+                won.put(game, true);
+            }
+        } else {
+            return;
+        }
     }
 
     private void firstWin(Game game) {
@@ -203,7 +231,7 @@ public class GameListener implements Listener {
             int i = 0;
             @Override
             public void run() {
-                if (i == 40) {
+                if (i == 2400) {
                     firstWin(game);
                     won.put(game, true);
                     cancel();

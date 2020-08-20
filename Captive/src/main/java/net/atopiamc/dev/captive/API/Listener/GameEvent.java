@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 
 public class GameEvent extends Event {
 
-    private HandlerList handlers = new HandlerList();
+    private static HandlerList handlers = new HandlerList();
 
     private Main plugin;
     private Game game;
@@ -27,6 +27,10 @@ public class GameEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

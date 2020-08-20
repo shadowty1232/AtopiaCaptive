@@ -38,17 +38,18 @@ public class Criminals {
     	File configFile = new File(plugin.getDataFolder(), "config.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));  
         entryPoint = loc;
+        World world = loc.getWorld();
         double x = loc.getX();
         double y = loc.getY();
         double z = loc.getZ();
         double yaw = loc.getYaw();
         double pitch = loc.getPitch();
+        config.set("Criminals.Spawn.World", world.getName());
         config.set("Criminals.Spawn.X", x);
         config.set("Criminals.Spawn.Y", y);
         config.set("Criminals.Spawn.Z", z);
         config.set("Criminals.Spawn.Pitch", pitch);
         config.set("Criminals.Spawn.Yaw", yaw);
-        
         try {
         	config.save(configFile);
         	

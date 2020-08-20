@@ -37,9 +37,9 @@ public class Cop {
     }
 
     public void setCopSpawn(Location loc) {
-    	 File configFile = new File(plugin.getDataFolder(), "config.yml");
-         YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));  
-         entryPoint = loc;
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));
+        entryPoint = loc;
         World world = loc.getWorld();
         double x = loc.getX();
         double y = loc.getY();
@@ -52,8 +52,6 @@ public class Cop {
         config.set("Cops.Spawn.Z", z);
         config.set("Cops.Spawn.Pitch", pitch);
         config.set("Cops.Spawn.Yaw", yaw);
-
-        
         try {
         	config.save(configFile);
         	
