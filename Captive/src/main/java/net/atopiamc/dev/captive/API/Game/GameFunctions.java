@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
 
 public class GameFunctions implements Game {
 
@@ -26,8 +27,7 @@ public class GameFunctions implements Game {
     private static final int MAX_PLAYERS;
     private static Location entryPoint;
     public static GameFunctions instance;
-    File configFile = new File(plugin.getDataFolder(), "config.yml");
-    YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
 
     public GameFunctions(Main plugin) {
         this.plugin = plugin;
@@ -116,27 +116,43 @@ public class GameFunctions implements Game {
     }
 
     public void setEntryPoint(Location loc) {
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);        
         entryPoint = loc;
         double x = loc.getX();
         double y = loc.getY();
         double z = loc.getZ();
+        double pitch = loc.getPitch();
+        double yaw = loc.getYaw();
         World world = loc.getWorld();
-        config.createSection("Captive.Lobby.World");
-        config.createSection("Captive.Lobby.X");
-        config.createSection("Captive.Lobby.Y");
-        config.createSection("Captive.Lobby.Z");
-        config.set("Captive.Lobby.World", world);
+       // config.createSection("Captive.Lobby.World");
+        //config.createSection("Captive.Lobby.X");
+       // config.createSection("Captive.Lobby.Y");
+       // config.createSection("Captive.Lobby.Z");
+        config.set("Captive.Lobby.World", world.getName());
         config.set("Captive.Lobby.X", x);
         config.set("Captive.Lobby.Y", y);
         config.set("Captive.Lobby.Z", z);
-        // Test
+        config.set("Captive.Lobby.Pitch", pitch);
+        config.set("Captive.Lobby.Yaw", yaw);
+        
+        try {
+        	config.save(configFile);
+        } catch(IOException e) {
+        	e.printStackTrace();
+        }
+
+
     }
 
     public Location getEntryPoint() {
-        World world = (World)plugin.getConfig().get("Captive.Lobby.World");
-        double x = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.X"));
-        double y = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.Y"));
-        double z = Double.parseDouble((String) plugin.getConfig().get("Captive.Lobby.Z"));
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);  
+        
+        World world = (World) Bukkit.getWorld((String) config.get("Captive.Lobby.World"));
+        double x = config.getDouble("Captive.Lobby.X");
+        double y = config.getDouble("Captive.Lobby.Y");
+        double z = config.getDouble("Captive.Lobby.Z");
         entryPoint = new Location(world, x, y, z);
         return entryPoint;
     }

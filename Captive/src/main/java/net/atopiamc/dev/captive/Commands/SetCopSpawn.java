@@ -24,7 +24,7 @@ public class SetCopSpawn implements CommandExecutor {
         Player p = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("setcopspawn")) {
             if (p.hasPermission("captive.admin")) {
-                Cop.getInstance().setCopSpawn(p);
+                Cop.getInstance().setCopSpawn(p.getLocation());
                 p.sendMessage(Utils.Color("&3Cop &bspawn set."));
             }
         }
