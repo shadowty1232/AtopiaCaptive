@@ -131,21 +131,18 @@ public class GameFunctions implements Game {
         config.set("Captive.Lobby.Z", z);
         config.set("Captive.Lobby.Pitch", pitch);
         config.set("Captive.Lobby.Yaw", yaw);
-        
         try {
         	config.save(configFile);
         } catch(IOException e) {
         	e.printStackTrace();
         }
-
-
     }
 
     public Location getEntryPoint() {
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);  
         
-        World world = (World) Bukkit.getWorld((String) config.get("Captive.Lobby.World"));
+        World world = Bukkit.getWorld((String) config.get("Captive.Lobby.World"));
         double x = config.getDouble("Captive.Lobby.X");
         double y = config.getDouble("Captive.Lobby.Y");
         double z = config.getDouble("Captive.Lobby.Z");

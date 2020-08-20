@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class Teams {
 
+    public static Object[] teams;
+    public static Object Cops;
+    public static Object Prisoners;
+    public static Object Criminals;
     public static ArrayList<Player> prisonerteam;
     public static ArrayList<Player> copteam;
     public static ArrayList<Player> criminalteam;
@@ -16,7 +20,30 @@ public class Teams {
         this.prisonerteam = new ArrayList<Player>();
         this.copteam = new ArrayList<Player>();
         this.criminalteam = new ArrayList<Player>();
+        this.Cops = this.copteam;
+        this.Prisoners = this.prisonerteam;
+        this.Criminals = this.criminalteam;
+        this.teams = new Object[]{this.Cops, this.Criminals, this.Prisoners};
         plugin.getLogger().info("Teams API Loaded.");
+    }
+
+    public static String getTeam(Player p) {
+        if (getPrisonerTeam().contains(p)) {
+            return "Prisoner";
+        }
+        else if (getCopTeam().contains(p)) {
+            return "Cop";
+        }
+        else if (getCriminalTeam().contains(p)) {
+            return "Criminal";
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static Object[] getTeams() {
+        return teams;
     }
 
     public static ArrayList<Player> getPrisonerTeam() {
