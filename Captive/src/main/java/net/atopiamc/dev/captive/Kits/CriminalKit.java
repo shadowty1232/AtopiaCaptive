@@ -5,11 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CriminalKit extends Kit{
-	public CriminalKit(String name, Player player, ItemStack icon) {
+	public CriminalKit(Player player) {
 		super("Criminal", player, new ItemStack(Material.WOOL, 1, (short)14));
 	}
-
-	
 	@Override
 	public void receiveItems(byte id) {
         getPlayer().getInventory().clear();

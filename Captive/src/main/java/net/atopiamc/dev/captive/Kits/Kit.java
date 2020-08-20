@@ -44,6 +44,8 @@ public abstract class Kit {
     }
 
     public static void loadKits() {
+        new CopsKit(null);
+        new CriminalKit(null);
     }
 
     public Player getPlayer() {

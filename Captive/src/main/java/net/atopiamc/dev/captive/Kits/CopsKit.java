@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class CopsKit extends Kit{
 
-	public CopsKit(String name, Player player, ItemStack icon) {
+	public CopsKit(Player player) {
 		super("Cops", player, new ItemStack(Material.WOOL, 1, (short)11));
 	}
 
