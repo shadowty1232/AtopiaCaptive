@@ -2,8 +2,13 @@ package net.atopiamc.dev.captive.API.Teams;
 
 import net.atopiamc.dev.captive.Main;
 import net.atopiamc.dev.captive.Utils.Utils;
+
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Criminals {
@@ -11,6 +16,8 @@ public class Criminals {
     public Location spawn;
     public World world;
     public static Criminals instance;
+    private static Location entryPoint;
+
 
     private Main plugin;
     public Criminals(Main plugin) {
@@ -27,14 +34,27 @@ public class Criminals {
         return spawn;
     }
 
-    public void setCriminalSpawn(Player p) {
-        Location playerLoc = p.getLocation();
-        double x = playerLoc.getX();
-        double y = playerLoc.getY();
-        double z = playerLoc.getZ();
-        plugin.getConfig().set("Criminals.Spawn.X", x);
-        plugin.getConfig().set("Criminals.Spawn.Y", y);
-        plugin.getConfig().set("Criminals.Spawn.Z", z);
+    public void setCriminalSpawn(Location loc) {
+    	File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "config.yml"));  
+        entryPoint = loc;
+        double x = loc.getX();
+        double y = loc.getY();
+        double z = loc.getZ();
+        double yaw = loc.getYaw();
+        double pitch = loc.getPitch();
+        config.set("Criminals.Spawn.X", x);
+        config.set("Criminals.Spawn.Y", y);
+        config.set("Criminals.Spawn.Z", z);
+        config.set("Criminals.Spawn.Pitch", pitch);
+        config.set("Criminals.Spawn.Yaw", yaw);
+        
+        try {
+        	config.save(configFile);
+        	
+        }catch(IOException e) {
+        	e.printStackTrace();
+        }
     }
 
     public static Criminals getInstance() {
