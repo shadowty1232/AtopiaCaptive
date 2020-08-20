@@ -125,10 +125,6 @@ public class GameFunctions implements Game {
         double pitch = loc.getPitch();
         double yaw = loc.getYaw();
         World world = loc.getWorld();
-       // config.createSection("Captive.Lobby.World");
-        //config.createSection("Captive.Lobby.X");
-       // config.createSection("Captive.Lobby.Y");
-       // config.createSection("Captive.Lobby.Z");
         config.set("Captive.Lobby.World", world.getName());
         config.set("Captive.Lobby.X", x);
         config.set("Captive.Lobby.Y", y);
