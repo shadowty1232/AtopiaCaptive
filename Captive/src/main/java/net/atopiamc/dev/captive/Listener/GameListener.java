@@ -36,6 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class GameListener implements Listener {
 
@@ -150,19 +151,21 @@ public class GameListener implements Listener {
         Location copSpawn = Cop.getInstance().getCopSpawn();
         Location criminalSpawn = Criminals.getInstance().getCriminalsSpawn();
         Location prisonerSpawn = Prisoner.getInstance().getPrisonerSpawn();
-        for (int i = 0; i == api.gamePlayers.size(); i++) {
-            if (api.gamePlayers.size() == 3) {
-                if (i == 1) {
-                    cops.add(api.gamePlayers.get(i).getPlayer());
+        for (GamePlayer p : api.gamePlayers.values())
+            for (int i = 0; i < api.gamePlayers.size(); ++i) {
+                Random randomTeam = new Random();
+                int TeamID = 0;
+                TeamID = randomTeam.nextInt(2);
+                if (TeamID == 0){
+                    cops.add(p.getPlayer());
                 }
-                if (i == 2) {
-                    criminals.add(api.gamePlayers.get(i).getPlayer());
+                if (TeamID == 1){
+                    criminals.add(p.getPlayer());
                 }
-                if (i == 3) {
-                    prisoner.add(api.gamePlayers.get(i).getPlayer());
+                if (TeamID == 2){
+                    prisoner.add(p.getPlayer());
                 }
             }
-        }
         for (Player p : cops) {
             p.teleport(copSpawn);
             CopsKit.getInstance().receiveItems(p);
@@ -196,6 +199,9 @@ public class GameListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        if (GameAPI.gamePlayers.get(p) == null){
+            return;
+        }
         GamePlayer gp = GameAPI.gamePlayers.get(p);
         Game game = gp.getGame();
         if (Teams.getPrisonerTeam().contains(p)) {

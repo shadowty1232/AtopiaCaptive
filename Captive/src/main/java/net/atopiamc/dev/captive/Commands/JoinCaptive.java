@@ -1,6 +1,7 @@
 package net.atopiamc.dev.captive.Commands;
 
 import net.atopiamc.dev.captive.API.Game.GameFunctions;
+import net.atopiamc.dev.captive.API.GameAPI;
 import net.atopiamc.dev.captive.Main;
 import net.atopiamc.dev.captive.Utils.Utils;
 import org.bukkit.command.Command;
@@ -24,7 +25,11 @@ public class JoinCaptive implements CommandExecutor {
         Player p = (Player) sender;
 
         if (cmd.getName().equalsIgnoreCase("joincaptive")) {
-            GameFunctions.getInstance().join(p);
+            if (GameAPI.gamePlayers.get(p) == null) {
+                GameFunctions.getInstance().join(p);
+            } else {
+                p.sendMessage(Utils.Color("You are in a game now!"));
+            }
         }
         return false;
     }

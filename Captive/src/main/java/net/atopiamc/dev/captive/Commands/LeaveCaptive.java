@@ -9,9 +9,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LeaveCaptive implements CommandExecutor {
+import java.util.ArrayList;
 
+public class LeaveCaptive implements CommandExecutor {
     private Main plugin;
+    private ArrayList<String> confirmation = new ArrayList<>();
     public LeaveCaptive(Main plugin) {
         this.plugin = plugin;
         plugin.getCommand("leavecaptive").setExecutor(this);
@@ -24,16 +26,18 @@ public class LeaveCaptive implements CommandExecutor {
         }
         Player p = (Player) sender;
         int i = 0;
-        if (cmd.getName().equalsIgnoreCase("captiveleave")) {
-            if (GameAPI.gamePlayers.containsKey(p)) {
-                switch(i) {
-                    case 0:
-                        p.sendMessage(Utils.Color("&3Are you sure you want to leave the queue?"));
-                        i++;
-                    case 1:
-                        GameFunctions.getInstance().leave(p);
-                        p.sendMessage(Utils.Color("&cYou have left the queue."));
+        if (args.length == 0) {
+            if (GameAPI.gamePlayers.get(p) != null) {
+                if (!confirmation.contains(p.getName())) {
+                    p.sendMessage(Utils.Color("&3Are you sure you want to leave the queue? Send again to confirmation."));
+                    confirmation.add(p.getName());
+                } else {
+                    GameFunctions.getInstance().leave(p);
+                    p.sendMessage(Utils.Color("&cYou have left the queue."));
+                    confirmation.remove(p.getName());
                 }
+            } else {
+                p.sendMessage(Utils.Color("&cYou have need playing a game to do that!"));
             }
         }
         return false;

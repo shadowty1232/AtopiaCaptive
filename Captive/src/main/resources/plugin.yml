@@ -3,7 +3,7 @@ authors:
   - Carbonate
   - TheJokerDev
   - xDabDoub
-version: 1.0
+version: 1.1
 main: net.atopiamc.dev.captive.Main
 description: Captive Minigame
 commands:
