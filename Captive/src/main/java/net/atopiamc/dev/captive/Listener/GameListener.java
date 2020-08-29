@@ -154,20 +154,26 @@ public class GameListener implements Listener {
         for (GamePlayer p : api.gamePlayers.values())
             for (int i = 0; i < api.gamePlayers.size(); ++i) {
                 Random randomTeam = new Random();
-                int TeamID = 0;
+                int TeamID = randomTeam.nextInt(2);
                 if (prisoner.size() == 1) {
                     TeamID = randomTeam.nextInt(1);
                 } else {
                     TeamID = randomTeam.nextInt(2);
                 }
                 if (TeamID == 0){
-                    cops.add(p.getPlayer());
+                    if (!cops.contains(p.getPlayer())) {
+                        cops.add(p.getPlayer());
+                    }
                 }
                 if (TeamID == 1){
-                    criminals.add(p.getPlayer());
+                    if (!criminals.contains(p.getPlayer())) {
+                        criminals.add(p.getPlayer());
+                    }
                 }
                 if (TeamID == 2){
-                    prisoner.add(p.getPlayer());
+                    if (prisoner.isEmpty()) {
+                        prisoner.add(p.getPlayer());
+                    }
                 }
             }
         for (Player p : cops) {
