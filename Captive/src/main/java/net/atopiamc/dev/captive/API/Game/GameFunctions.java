@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameFunctions implements Game {
 
@@ -27,6 +28,7 @@ public class GameFunctions implements Game {
     private static final int MAX_PLAYERS;
     private static Location entryPoint;
     public static GameFunctions instance;
+    public static ArrayList<Player> ppl;
 
 
     public GameFunctions(Main plugin) {
@@ -40,6 +42,7 @@ public class GameFunctions implements Game {
     static {
         MIN_PLAYERS = 3;
         MAX_PLAYERS = 17;
+        ppl = players;
     }
 
     public void start() {

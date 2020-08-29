@@ -155,7 +155,11 @@ public class GameListener implements Listener {
             for (int i = 0; i < api.gamePlayers.size(); ++i) {
                 Random randomTeam = new Random();
                 int TeamID = 0;
-                TeamID = randomTeam.nextInt(2);
+                if (prisoner.size() == 1) {
+                    TeamID = randomTeam.nextInt(1);
+                } else {
+                    TeamID = randomTeam.nextInt(2);
+                }
                 if (TeamID == 0){
                     cops.add(p.getPlayer());
                 }
