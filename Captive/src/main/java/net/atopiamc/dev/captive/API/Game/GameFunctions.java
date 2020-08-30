@@ -47,12 +47,12 @@ public class GameFunctions implements Game {
 
     public void start() {
         hasStarted = true;
-        CountdownTimer timer = new CountdownTimer(this.plugin, 30, () -> {}, this::startGame, t -> {
+        CountdownTimer timer = new CountdownTimer(plugin, 30, () -> {}, this::startGame, t -> {
         if (t.getSecondsLeft() <= 5) {
-            this.sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
+            sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
         }
         else if (t.getSecondsLeft() % 5 == 0) {
-               this.sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
+            sendMessage("§3Game starts in §b" + t.getSecondsLeft() + " §3seconds.");
         }});
         timer.scheduleTimer();
     }

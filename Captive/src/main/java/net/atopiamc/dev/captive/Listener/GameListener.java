@@ -151,10 +151,10 @@ public class GameListener implements Listener {
         Location copSpawn = Cop.getInstance().getCopSpawn();
         Location criminalSpawn = Criminals.getInstance().getCriminalsSpawn();
         Location prisonerSpawn = Prisoner.getInstance().getPrisonerSpawn();
+        int TeamID;
         for (GamePlayer p : api.gamePlayers.values())
             for (int i = 0; i < api.gamePlayers.size(); ++i) {
                 Random randomTeam = new Random();
-                int TeamID = randomTeam.nextInt(2);
                 if (prisoner.size() == 1) {
                     TeamID = randomTeam.nextInt(1);
                 } else {
@@ -206,6 +206,8 @@ public class GameListener implements Listener {
         gameTimer(e.getGame());
     }
 
+    int i = 0;
+
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
@@ -214,10 +216,15 @@ public class GameListener implements Listener {
         }
         GamePlayer gp = GameAPI.gamePlayers.get(p);
         Game game = gp.getGame();
-        if (Teams.getPrisonerTeam().contains(p)) {
-            if (p.getLocation().distance(Criminals.getInstance().getCriminalsSpawn()) <= 3) {
-                secondWin(game);
-                won.put(game, true);
+        if (i == 0) {
+            if (Teams.getPrisonerTeam().contains(p)) {
+                if (p.getLocation().distance(Criminals.getInstance().getCriminalsSpawn()) <= 3) {
+                    secondWin(game);
+                    won.put(game, true);
+                    i++;
+                }
+            } else {
+                return;
             }
         } else {
             return;
@@ -266,6 +273,9 @@ public class GameListener implements Listener {
                     cancel();
                 }
                 if (won.containsKey(game)) {
+                    cancel();
+                }
+                if (game.inLobby() == true) {
                     cancel();
                 }
                 i++;

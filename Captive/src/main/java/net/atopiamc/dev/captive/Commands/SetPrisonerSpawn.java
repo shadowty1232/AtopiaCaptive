@@ -25,7 +25,7 @@ public class SetPrisonerSpawn implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("setprisonerspawn")) {
             if (p.hasPermission("captive.admin")) {
                 Prisoner.getInstance().setPrisonerSpawn(p.getLocation());
-                p.sendMessage(Utils.Color("&3Prisoner spawn set."));
+                p.sendMessage(Utils.Color("&3Prisoner &bspawn set."));
             }
         }
 

@@ -25,10 +25,15 @@ public class JoinCaptive implements CommandExecutor {
         Player p = (Player) sender;
 
         if (cmd.getName().equalsIgnoreCase("joincaptive")) {
-            if (GameAPI.gamePlayers.get(p) == null) {
-                GameFunctions.getInstance().join(p);
+            if (p.hasPermission("captive.admin")) {
+                if (GameAPI.gamePlayers.get(p) == null) {
+                    GameFunctions.getInstance().join(p);
+                } else {
+                    p.sendMessage(Utils.Color("You are in a game now!"));
+                }
             } else {
-                p.sendMessage(Utils.Color("You are in a game now!"));
+                p.sendMessage(Utils.Color("&cThis command has been disabled in the Alpha Test."));
+                return false;
             }
         }
         return false;

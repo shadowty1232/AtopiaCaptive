@@ -10,6 +10,7 @@ import net.atopiamc.dev.captive.Commands.*;
 import net.atopiamc.dev.captive.Kits.Kit;
 import net.atopiamc.dev.captive.Listener.BlockListener;
 import net.atopiamc.dev.captive.Listener.GameListener;
+import net.atopiamc.dev.captive.Listener.ServerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,6 +64,7 @@ public class Main extends JavaPlugin {
 
     public void registerEvents() {
         new BlockListener(this);
+        new ServerListener(this);
         Bukkit.getPluginManager().registerEvents(new GameListener(), this);
     }
 
