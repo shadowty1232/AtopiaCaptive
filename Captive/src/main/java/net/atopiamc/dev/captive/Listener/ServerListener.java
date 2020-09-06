@@ -20,7 +20,12 @@ public class ServerListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (GameAPI.gamePlayers.get(p) == null) {
-            GameFunctions.getInstance().join(p);
+            if (GameFunctions.getInstance().inLobby() == true) {
+                GameFunctions.getInstance().join(p);
+            } else {
+                p.sendMessage("&aPlease wait, a game is currently playing. Use /joincaptive once the game has ended.");
+                return;
+            }
         }
     }
 
