@@ -162,17 +162,17 @@ public class GameListener implements Listener {
                 }
                 if (TeamID == 0){
                     if (!cops.contains(p.getPlayer())) {
-                        cops.add(p.getPlayer());
+                        Teams.addCopTeam(p.getPlayer());
                     }
                 }
                 if (TeamID == 1){
                     if (!criminals.contains(p.getPlayer())) {
-                        criminals.add(p.getPlayer());
+                        Teams.addCopTeam(p.getPlayer());
                     }
                 }
                 if (TeamID == 2){
                     if (prisoner.isEmpty()) {
-                        prisoner.add(p.getPlayer());
+                        Teams.addPrisonerTeam(p.getPlayer());
                     }
                 }
             }
