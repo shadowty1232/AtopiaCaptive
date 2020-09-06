@@ -85,23 +85,26 @@ public class GameFunctions implements Game {
     }
 
     public void join(Player p) {
-        if (players.size() >= MAX_PLAYERS || hasStarted()) {
+        if (inLobby == true) {
+            if (players.size() >= MAX_PLAYERS || hasStarted()) {
+                return;
+            }
+            players.add(p);
+            GameAPI.gamePlayers.put(p, new GamePlayer(this, p));
+            try {
+                p.sendMessage(Utils.Color("&aYou have joined the Captive queue."));
+                p.teleport(getEntryPoint());
+            } catch (EntryPointNotSetException e) {
+                players.remove(p);
+                GameAPI.gamePlayers.remove(p);
+                throw new EntryPointNotSetException("Entry Point for Captive not set");
+            }
+            Bukkit.getPluginManager().callEvent(new PlayerGameJoinEvent(this, p));
+            if (players.size() >= MIN_PLAYERS && !hasStarted()) {
+                start();
+            }
+        } else {
             return;
-        }
-        players.add(p);
-        GameAPI.gamePlayers.put(p, new GamePlayer(this, p));
-        try {
-            p.sendMessage(Utils.Color("&aYou have joined the Captive queue."));
-            p.teleport(getEntryPoint());
-        }
-        catch (EntryPointNotSetException e){
-            players.remove(p);
-            GameAPI.gamePlayers.remove(p);
-            throw new EntryPointNotSetException("Entry Point for Captive not set");
-        }
-        Bukkit.getPluginManager().callEvent(new PlayerGameJoinEvent(this, p));
-        if (players.size() >= MIN_PLAYERS && !hasStarted()) {
-            start();
         }
     }
 

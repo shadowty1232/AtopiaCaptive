@@ -28,7 +28,8 @@ public class BlockListener implements Listener {
         if (cops.contains(p) || prisoner.contains(p) || criminals.contains(p)) {
             if (blockType.equals(Material.DIRT) || blockType.equals(Material.STONE)
                 || blockType.equals(Material.GRASS) || blockType.equals(Material.SMOOTH_BRICK)
-                || blockType.equals(Material.WOOD)) {
+                || blockType.equals(Material.WOOD) || blockType.equals(Material.COBBLESTONE)
+                || blockType.equals(Material.MOSSY_COBBLESTONE) || blockType.equals(Material.IRON_FENCE)) {
                 return;
             } else {
                 e.setCancelled(true);

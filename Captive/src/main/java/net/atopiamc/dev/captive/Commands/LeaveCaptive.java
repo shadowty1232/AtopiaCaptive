@@ -27,8 +27,8 @@ public class LeaveCaptive implements CommandExecutor {
         Player p = (Player) sender;
         int i = 0;
         if (cmd.getName().equalsIgnoreCase("leavecaptive")) {
-            if (p.hasPermission("captive.admin")) {
-                if (args.length == 0) {
+            if (args.length == 0) {
+                if (GameFunctions.getInstance().inLobby() == true) {
                     if (GameAPI.gamePlayers.get(p) != null) {
                         if (!confirmation.contains(p.getName())) {
                             p.sendMessage(Utils.Color("&3Are you sure you want to leave the queue? Send again to confirmation."));
@@ -41,9 +41,9 @@ public class LeaveCaptive implements CommandExecutor {
                     } else {
                         p.sendMessage(Utils.Color("&cYou have need playing a game to do that!"));
                     }
+                } else {
+                    p.sendMessage(Utils.Color("&cYou cannot leave right now."));
                 }
-            } else {
-                p.sendMessage(Utils.Color("&cThis command has been disabled in the Alpha Test."));
                 return false;
             }
         }
