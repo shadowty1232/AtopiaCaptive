@@ -93,6 +93,9 @@ public class GameFunctions implements Game {
             GameAPI.gamePlayers.put(p, new GamePlayer(this, p));
             try {
                 p.sendMessage(Utils.Color("&aYou have joined the Captive queue."));
+                for (GamePlayer pp : GameAPI.gamePlayers.values()) {
+                	pp.sendMessage(Utils.Color("&7" + p.getName() + " &ehas joined! " + players.size() + "/" + MAX_PLAYERS));
+                }
                 p.teleport(getEntryPoint());
             } catch (EntryPointNotSetException e) {
                 players.remove(p);
