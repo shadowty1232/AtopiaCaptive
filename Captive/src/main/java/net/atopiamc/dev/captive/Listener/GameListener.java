@@ -208,29 +208,31 @@ public class GameListener implements Listener {
         }
 
         /*
-        for (int i = 0; i < api.gamePlayers.size(); ++i) {
-                Random randomTeam = new Random();
-                if (prisoner.size() == 1) {
-                    TeamID = randomTeam.nextInt(1);
-                } else {
-                    TeamID = randomTeam.nextInt(2);
-                }
-                if (TeamID == 0){
-                    if (!cops.contains(p.getPlayer())) {
-                        Teams.addCopTeam(p.getPlayer());
+        for (GamePlayer p : api.gamePlayers.values()) {
+            for (int i = 0; i < api.gamePlayers.size(); ++i) {
+                    Random randomTeam = new Random();
+                    if (prisoner.size() == 1) {
+                        TeamID = randomTeam.nextInt(1);
+                    } else {
+                        TeamID = randomTeam.nextInt(2);
                     }
-                }
-                if (TeamID == 1){
-                    if (!criminals.contains(p.getPlayer())) {
-                        Teams.addCriminalTeam(p.getPlayer());
+                    if (TeamID == 0){
+                        if (!cops.contains(p.getPlayer())) {
+                            Teams.addCopTeam(p.getPlayer());
+                        }
                     }
-                }
-                if (TeamID == 2){
-                    if (prisoner.isEmpty()) {
-                        Teams.addPrisonerTeam(p.getPlayer());
+                    if (TeamID == 1){
+                        if (!criminals.contains(p.getPlayer())) {
+                            Teams.addCriminalTeam(p.getPlayer());
+                        }
                     }
-                }
-            }
+                    if (TeamID == 2){
+                        if (prisoner.isEmpty()) {
+                            Teams.addPrisonerTeam(p.getPlayer());
+                        }
+                    }
+              }
+          }
          */
         for (Player p : cops) {
             p.teleport(copSpawn);
