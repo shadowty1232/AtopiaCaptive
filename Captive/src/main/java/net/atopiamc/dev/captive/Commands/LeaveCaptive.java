@@ -1,15 +1,17 @@
 package net.atopiamc.dev.captive.Commands;
 
-import net.atopiamc.dev.captive.API.Game.GameFunctions;
-import net.atopiamc.dev.captive.API.GameAPI;
-import net.atopiamc.dev.captive.Main;
-import net.atopiamc.dev.captive.Utils.Utils;
+import java.util.ArrayList;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+import net.atopiamc.dev.captive.Main;
+import net.atopiamc.dev.captive.API.GameAPI;
+import net.atopiamc.dev.captive.API.Game.GameFunctions;
+import net.atopiamc.dev.captive.API.Game.GamePlayer;
+import net.atopiamc.dev.captive.Utils.Utils;
 
 public class LeaveCaptive implements CommandExecutor {
     private Main plugin;
@@ -36,7 +38,11 @@ public class LeaveCaptive implements CommandExecutor {
                         } else {
                             GameFunctions.getInstance().leave(p);
                             p.sendMessage(Utils.Color("&cYou have left the queue."));
+                            for(GamePlayer pp : GameAPI.gamePlayers.values()) {
+                            	pp.sendMessage(Utils.Color("&7" + p.getName() + " &ehas left! " + GameFunctions.getInstance().players.size() + "/17"));
+                            }
                             confirmation.remove(p.getName());
+                            
                         }
                     } else {
                         p.sendMessage(Utils.Color("&cYou have need playing a game to do that!"));
