@@ -58,27 +58,30 @@ public class Teams {
         return criminalteam;
     }
 
-    public static void addPrisonerTeam(Player p) {
+    public static boolean addPrisonerTeam(Player p) {
         if (prisonerteam.size() > 1) {
-            throw new IllegalArgumentException("Prisoner Team is too Large, Max Size 1.");
+            return false;
         } else {
             prisonerteam.add(p);
+            return true;
         }
     }
 
-    public static void addCopTeam(Player p) {
+    public static boolean addCopTeam(Player p) {
         if (copteam.size() > 8) {
-            throw new IllegalArgumentException("Cop Team is too Large, Max Size 8.");
+            return false;
         } else {
             copteam.add(p);
+            return true;
         }
     }
 
-    public static void addCriminalTeam(Player p) {
+    public static boolean addCriminalTeam(Player p) {
         if (criminalteam.size() > 8) {
-            throw new IllegalArgumentException("Criminal Team is too Large, Max Size 8.");
+            return false;
         } else {
             criminalteam.add(p);
+            return true;
         }
     }
 }

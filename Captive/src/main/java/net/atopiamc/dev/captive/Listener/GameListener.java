@@ -27,6 +27,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -129,6 +130,23 @@ public class GameListener implements Listener {
     }
 
     @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) e.getDamager();
+        Player t = (Player) e.getEntity();
+
+        if (Teams.getCopTeam().contains(p) && Teams.getCopTeam().contains(t)) {
+            e.setCancelled(true);
+        } else if (Teams.getCriminalTeam().contains(p) && Teams.getCriminalTeam().contains(t)) {
+            e.setCancelled(true);
+        } else {
+            return;
+        }
+    }
+
+    @EventHandler
     public void onReset(GameReset e) {
         won.remove(e.getGame());
         if (blocksBroke.get(e.getGame().getName()) == null && blocksPlaced.get(e.getGame().getName()) == null) {
@@ -144,6 +162,10 @@ public class GameListener implements Listener {
                 block.getLocation().getWorld().getBlockAt(block.getLocation()).setType(block.getType());
             }
         }
+        for (Player p : Teams.getPrisonerTeam()) {
+            p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        }
+
     }
 
     @EventHandler
@@ -152,8 +174,41 @@ public class GameListener implements Listener {
         Location criminalSpawn = Criminals.getInstance().getCriminalsSpawn();
         Location prisonerSpawn = Prisoner.getInstance().getPrisonerSpawn();
         int TeamID;
-        for (GamePlayer p : api.gamePlayers.values())
-            for (int i = 0; i < api.gamePlayers.size(); ++i) {
+        for (int i = 0; i < api.gamePlayers.size(); ++i) {
+            Random randomTeam = new Random();
+            Player p = api.gamePlayers.get(i).getPlayer();
+            if (prisoner.size() != 0) {
+                TeamID = randomTeam.nextInt(1);
+            } else {
+                TeamID = randomTeam.nextInt(2);
+            }
+            // Make Teams.AddXTeam to Teams.add(Team, Player);
+            if (TeamID == 0) {
+                if (!cops.contains(p)) {
+                    if (!Teams.addCopTeam(p)) {
+                        Teams.addCriminalTeam(p);
+                    }
+                    continue;
+                }
+            }
+            if (TeamID == 1) {
+                if (!criminals.contains(p)) {
+                    if (!Teams.addCriminalTeam(p)) {
+                        Teams.addCopTeam(p);
+                    }
+                    continue;
+                }
+            }
+            if (TeamID == 2) {
+                if (prisoner.isEmpty()) {
+                    Teams.addPrisonerTeam(p);
+                    continue;
+                }
+            }
+        }
+
+        /*
+        for (int i = 0; i < api.gamePlayers.size(); ++i) {
                 Random randomTeam = new Random();
                 if (prisoner.size() == 1) {
                     TeamID = randomTeam.nextInt(1);
@@ -167,7 +222,7 @@ public class GameListener implements Listener {
                 }
                 if (TeamID == 1){
                     if (!criminals.contains(p.getPlayer())) {
-                        Teams.addCopTeam(p.getPlayer());
+                        Teams.addCriminalTeam(p.getPlayer());
                     }
                 }
                 if (TeamID == 2){
@@ -176,6 +231,7 @@ public class GameListener implements Listener {
                     }
                 }
             }
+         */
         for (Player p : cops) {
             p.teleport(copSpawn);
             CopsKit.getInstance().receiveItems(p);
@@ -196,7 +252,9 @@ public class GameListener implements Listener {
         for (Player p : prisoner) {
             p.teleport(prisonerSpawn);
             p.getInventory().addItem(new ItemStack(Material.WOOD_PICKAXE, 1));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 2));
+            p.getInventory().addItem(new ItemStack(Material.BOW, 1));
+            p.getInventory().addItem(new ItemStack(Material.ARROW, 20));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 1));
             p.sendMessage(Utils.Color("&9You are the Prisoner!"));
             p.sendMessage(Utils.Color("&7Objective:"));
             p.sendMessage(Utils.Color("&7Wait for your fellow Criminals to bust you out!"));
